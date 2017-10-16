@@ -1,9 +1,12 @@
 package edu.up.cs301.pig;
 
+import edu.up.cs301.animation.AnimationSurface;
 import edu.up.cs301.game.GameHumanPlayer;
 import edu.up.cs301.game.GameMainActivity;
 import edu.up.cs301.game.R;
 import edu.up.cs301.game.infoMsg.GameInfo;
+import edu.up.cs301.game.infoMsg.IllegalMoveInfo;
+import edu.up.cs301.game.infoMsg.NotYourTurnInfo;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -31,9 +34,10 @@ public class PigHumanPlayer extends GameHumanPlayer implements OnClickListener {
     private TextView    messageTextView     = null;
     private ImageButton dieImageButton      = null;
     private Button      holdButton          = null;
-
+    private AnimationSurface pigSurface;
     // the android activity that we are running
     private GameMainActivity myActivity;
+    private PigGameState humanState;
 
     /**
      * constructor does nothing extra
@@ -61,6 +65,19 @@ public class PigHumanPlayer extends GameHumanPlayer implements OnClickListener {
     @Override
     public void receiveInfo(GameInfo info) {
         //TODO You will implement this method to receive state objects from the game
+        if(info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo)
+        {
+            pigSurface.flash(Color.RED,50);
+        }
+        humanState = (PigGameState)info;
+        if(humanState.getplayerID() == this.playerNum)
+        {
+            if(humanState.getplayerID()==0)
+            {
+                //TODO   playerScoreTextView.setText(humanState.getPlayer_0score());//Set score to string
+            }
+
+        }
     }//receiveInfo
 
     /**
@@ -100,6 +117,7 @@ public class PigHumanPlayer extends GameHumanPlayer implements OnClickListener {
         //Listen for button presses
         dieImageButton.setOnClickListener(this);
         holdButton.setOnClickListener(this);
+
 
     }//setAsGui
 
